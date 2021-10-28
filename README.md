@@ -32,7 +32,7 @@ To run the application, execute the command in the module directory :
 The application initiate the database and insert values into it using the sql file `data.sql`
 located in the resources directory of the module infrastructure.
 
-### Test the application
+### Testing the application
 
 #### Terminal
 

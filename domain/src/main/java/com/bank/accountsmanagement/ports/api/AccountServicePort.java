@@ -2,6 +2,7 @@ package com.bank.accountsmanagement.ports.api;
 
 import com.bank.accountsmanagement.models.Account;
 import com.bank.accountsmanagement.models.Operation;
+import com.bank.accountsmanagement.sevices.AccountBalanceInsufficientException;
 import com.bank.accountsmanagement.sevices.UnknownAccountException;
 
 import java.util.Optional;
@@ -20,7 +21,7 @@ public interface AccountServicePort {
      * @param operation The operation to add
      * @throws UnknownAccountException Thrown when the account does not exist in DB.
      */
-    void addOperation(String accountIban, Operation operation) throws UnknownAccountException;
+    void addOperation(String accountIban, Operation operation) throws UnknownAccountException, AccountBalanceInsufficientException;
 
     /**
      * Save the account into DB.

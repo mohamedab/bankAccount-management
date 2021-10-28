@@ -22,17 +22,17 @@ public class AccountServiceImpl implements AccountServicePort {
     }
 
     @Override
-    public void addOperation(String accountIban, Operation operation) throws UnknownAccountException {
-        Optional<Account> accountOptional = get(accountIban);
-        if(!accountOptional.isPresent()) {
-            throw new UnknownAccountException("Account:" + accountIban + " is unknown");
+    public void addOperation(String accountIban, Operation operation) throws UnknownAccountException, AccountBalanceInsufficientException {
+        if(operation == null) {
+            return;
         }
-        Account account = accountOptional.get();
-        account.addOperation(operation);
+        Account account = get(accountIban).orElseThrow(() -> new UnknownAccountException("Account :" + accountIban + " is unknown"));
         if(TypeOperation.WITHDRAWAL.equals(operation.getTypeOperation())) {
-            account.setBalance(account.getBalance().subtract(operation.getAmount()));
+            if(!account.withdraw(operation)){
+                throw new AccountBalanceInsufficientException("The account balance is insufficient to perform this operation");
+            }
         } else {
-            account.setBalance(account.getBalance().add(operation.getAmount()));
+            account.deposit(operation);
         }
         saveAccount(account);
     }

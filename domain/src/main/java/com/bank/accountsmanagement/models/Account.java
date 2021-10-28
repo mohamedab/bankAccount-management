@@ -66,8 +66,22 @@ public class Account {
         this.balance = balance;
     }
 
-    public void addOperation(Operation operation){
-        if(this.operations == null) {
+    public void deposit(Operation operation) {
+        addOperation(operation);
+        this.balance = this.balance.add(operation.getAmount());
+    }
+
+    public boolean withdraw(Operation operation) {
+        if (this.balance.compareTo(operation.getAmount()) < 0) {
+            return false;
+        }
+        addOperation(operation);
+        this.balance = this.balance.subtract(operation.getAmount());
+        return true;
+    }
+
+    public void addOperation(Operation operation) {
+        if (this.operations == null) {
             this.operations = new ArrayList<>();
         }
         this.operations.add(operation);
